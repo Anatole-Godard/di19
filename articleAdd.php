@@ -8,21 +8,31 @@ include ("_baseHTML1.php");
 if($_POST){
     //Upload FILE
     if(!empty($_FILES['image']['name'])){
+        $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        $nomImage = md5(uniqid()).'.'.$extension;
 
+        $dateNow = new DateTime();
+        $repository = './uploads/images/'.$dateNow->format('Y/m');
+
+        if(!is_dir($repository)){
+            mkdir($repository,0777,true);
+        }
         move_uploaded_file(
                 $_FILES['image']['tmp_name']
-                , './uploads/images/'.$_FILES['image']['name']
+                , $repository.'/'.$nomImage
         );
     }
 
     //Ajout article
-    $requete = $bdd->prepare('INSERT INTO articles (titre,description,dateajout,auteur)
-        VALUES(:titre,:description,:dateajout,:auteur)');
+    $requete = $bdd->prepare('INSERT INTO articles (titre,description,dateajout,auteur, ImageRepository,ImageFileName)
+        VALUES(:titre,:description,:dateajout,:auteur,:ImageRepository,:ImageFilename)');
     $requete->execute([
         'titre' =>  $_POST['titre']
         ,'description' => $_POST['description']
         ,'dateajout' => $_POST['dateAjout']
         ,'auteur' => $_POST['auteur']
+        ,'ImageRepository' => $repository
+        ,'ImageFilename' => $nomImage
     ]);
 
     $id = $bdd->lastInsertId();
