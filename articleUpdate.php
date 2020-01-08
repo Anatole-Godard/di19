@@ -6,8 +6,28 @@ include ("_baseHTML1.php");
 <?php
 if(isset($_GET['id'])){
     if($_POST){
+
+        //Upload FILE
+        if(!empty($_FILES['image']['name'])){
+            $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $nomImage = md5(uniqid()).'.'.$extension;
+
+            $dateNow = new DateTime();
+            $repository = './uploads/images/'.$dateNow->format('Y/m');
+            $SQLrepository = $dateNow->format('Y/m');
+
+            if(!is_dir($repository)){
+                mkdir($repository,0777,true);
+            }
+            move_uploaded_file(
+                $_FILES['image']['tmp_name']
+                , $repository.'/'.$nomImage
+            );
+        }
+
         $requete = $bdd->prepare("UPDATE articles set Titre=:Titre
-            ,Description=:Description, DateAjout=:DateAjout, Auteur=:Auteur
+            ,Description=:Description, DateAjout=:DateAjout, Auteur=:Auteur, 
+                    ImageRepository=:ImageRepository,ImageFileName=:ImageFileName
             WHERE id=:IDARTICLE
                 ");
         $requete->execute([
@@ -16,6 +36,8 @@ if(isset($_GET['id'])){
             ,"DateAjout" => $_POST['dateAjout']
             ,"Auteur" => $_POST['auteur']
             ,"IDARTICLE" => $_GET['id']
+            ,"ImageRepository" => $SQLrepository
+            ,"ImageFileName" => $nomImage
         ]);
     }
 
@@ -44,7 +66,7 @@ if(isset($_GET['id'])){
             }
         ?>
     </select>
-    <input type="file" name="name">
+    <input type="file" name="image">
     <?php
         if($article["ImageFileName"] != ""
             AND file_exists('./uploads/images/'.$article["ImageRepository"]
