@@ -31,7 +31,7 @@ if(isset($_GET['id'])){
 
 }
 ?>
-<form name="updateArticle" method="post">
+<form name="updateArticle" method="post" enctype="multipart/form-data">
     <input type="text" name="titre" value="<?php echo $article['Titre'] ?>" >
     <textarea name="description"><?php echo $article['Description'] ?></textarea>
     <input type="date" name="dateAjout" value="<?php echo $article['DateAjout'] ?>">
@@ -44,7 +44,17 @@ if(isset($_GET['id'])){
             }
         ?>
     </select>
+    <input type="file" name="name">
+    <?php
+        if($article["ImageFileName"] != ""
+            AND file_exists('./uploads/images/'.$article["ImageRepository"]
+            .'/'.$article["ImageFileName"])
+        ){
+            echo "<img src='./uploads/images/".$article['ImageRepository']."/"
+                .$article['ImageFileName']."' alt='Coucou' title='super'/>";
+        }
 
+    ?>
     <input type="submit">
 
 </form>

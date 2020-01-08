@@ -13,6 +13,7 @@ if($_POST){
 
         $dateNow = new DateTime();
         $repository = './uploads/images/'.$dateNow->format('Y/m');
+        $SQLrepository = $dateNow->format('Y/m');
 
         if(!is_dir($repository)){
             mkdir($repository,0777,true);
@@ -31,12 +32,12 @@ if($_POST){
         ,'description' => $_POST['description']
         ,'dateajout' => $_POST['dateAjout']
         ,'auteur' => $_POST['auteur']
-        ,'ImageRepository' => $repository
+        ,'ImageRepository' => $SQLrepository
         ,'ImageFilename' => $nomImage
     ]);
 
     $id = $bdd->lastInsertId();
-    //header("location:/articleUpdate.php?id=".$id);
+    header("location:/articleUpdate.php?id=".$id);
 }
 
 ?>
