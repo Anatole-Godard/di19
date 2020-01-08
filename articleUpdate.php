@@ -28,7 +28,7 @@ if(isset($_GET['id'])){
 
     //var_dump($article);
 
-    $auteurs = ["Fabien", "Brice", "Benoit", "Denis", "Sylvain", "Manu"];
+
 }
 ?>
 <form name="updateArticle" method="post">
@@ -37,6 +37,7 @@ if(isset($_GET['id'])){
     <input type="date" name="dateAjout" value="<?php echo $article['DateAjout'] ?>">
     <select name="auteur">
         <?php
+        $auteurs = ["Fabien", "Brice", "Benoit", "Denis", "Sylvain", "Manu"];
         foreach ( $auteurs as $auteur) {
             $selected = ($auteur == $article['Auteur'])? "selected" : "";
             echo '<option value="'.$auteur.'" '.$selected.'>'.$auteur.'</option>';
