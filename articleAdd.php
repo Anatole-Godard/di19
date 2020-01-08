@@ -2,26 +2,35 @@
 include ("config.php");
 include ("_baseHTML1.php");
 ?>
-    <h1>Update Article</h1>
+    <h1>ADD Article</h1>
 <?php
 
-    if($_POST){
+if($_POST){
+    //Upload FILE
+    if(!empty($_FILES['image']['name'])){
 
-        $requete = $bdd->prepare('INSERT INTO articles (titre,description,dateajout,auteur)
-            VALUES(:titre,:description,:dateajout,:auteur)');
-        $requete->execute([
-            'titre' =>  $_POST['titre']
-            ,'description' => $_POST['description']
-            ,'dateajout' => $_POST['dateAjout']
-            ,'auteur' => $_POST['auteur']
-        ]);
-
-        $id = $bdd->lastInsertId();
-        header("location:/articleUpdate.php?id=".$id);
+        move_uploaded_file(
+                $_FILES['image']['tmp_name']
+                , './uploads/images/'.$_FILES['image']['name']
+        );
     }
 
+    //Ajout article
+    $requete = $bdd->prepare('INSERT INTO articles (titre,description,dateajout,auteur)
+        VALUES(:titre,:description,:dateajout,:auteur)');
+    $requete->execute([
+        'titre' =>  $_POST['titre']
+        ,'description' => $_POST['description']
+        ,'dateajout' => $_POST['dateAjout']
+        ,'auteur' => $_POST['auteur']
+    ]);
+
+    $id = $bdd->lastInsertId();
+    //header("location:/articleUpdate.php?id=".$id);
+}
+
 ?>
-    <form name="updateArticle" method="post">
+    <form name="updateArticle" method="post" enctype="multipart/form-data">
         <input type="text" name="titre" value="" >
         <textarea name="description"></textarea>
         <input type="date" name="dateAjout" value="">
@@ -33,6 +42,7 @@ include ("_baseHTML1.php");
             }
             ?>
         </select>
+        <input type="file" name="image">
 
         <input type="submit">
 
