@@ -25,6 +25,11 @@ if(isset($_GET['id'])){
             );
         }
 
+        //Suppression image ancienne
+        if($_POST["imageAncienne"] != "/"){
+            unlink('./uploads/images/'.$_POST["imageAncienne"]);
+        }
+
         $requete = $bdd->prepare("UPDATE articles set Titre=:Titre
             ,Description=:Description, DateAjout=:DateAjout, Auteur=:Auteur, 
                     ImageRepository=:ImageRepository,ImageFileName=:ImageFileName
@@ -77,6 +82,8 @@ if(isset($_GET['id'])){
         }
 
     ?>
+    <input type="hidden" name="imageAncienne" value="<?php echo $article["ImageRepository"]
+        .'/'.$article["ImageFileName"] ?>"/>
     <input type="submit">
 
 </form>
