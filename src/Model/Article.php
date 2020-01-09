@@ -1,5 +1,5 @@
 <?php
-namespace myclass;
+namespace src\Model;
 
 class Article extends Contenu {
     private $Auteur;

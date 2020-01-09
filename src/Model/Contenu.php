@@ -1,5 +1,5 @@
 <?php
-namespace myclass;
+namespace src\Model;
 
 class Contenu {
     private $Id;
