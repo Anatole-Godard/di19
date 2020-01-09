@@ -16,5 +16,8 @@ $controller = $_GET['controller'];
 $action = $_GET['action'];
 //$param = $_GET['param'];
 
-$class = 'src\Controller\\'.$controller.'Controller';
-var_dump($class);
+$className = 'src\Controller\\'.$controller.'Controller';
+$classController = new $className;
+echo $classController->$action();
+
+var_dump($classController);
