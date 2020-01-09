@@ -33,6 +33,27 @@ class Article extends Contenu {
 
     }
 
+    public function SqlGetAll(\PDO $bdd){
+            $requete = $bdd->prepare('SELECT * FROM articles');
+            $requete->execute();
+            $arrayArticle = $requete->fetchAll();
+
+            $listArticle = [];
+            foreach ($arrayArticle as $articleSQL){
+                $article = new Article();
+                $article->setTitre($articleSQL['Titre']);
+                $article->setAuteur($articleSQL['Auteur']);
+                $article->setDescription($articleSQL['Description']);
+                $article->setDateAjout($articleSQL['DateAjout']);
+                $article->setImageRepository($articleSQL['ImageRepository']);
+                $article->setImageFileName($articleSQL['ImageFileName']);
+
+                $listArticle[] = $article;
+            }
+            return $listArticle;
+    }
+
+
     /**
      * @return mixed
      */
