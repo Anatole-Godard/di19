@@ -4,7 +4,7 @@ namespace src\Controller;
 use src\Model\Article;
 use src\Model\Bdd;
 
-class ArticleController {
+class ArticleController extends AbstractController {
 
     public function Index(){
         return 'bonjour';
@@ -15,7 +15,7 @@ class ArticleController {
         $listArticle = $article->SqlGetAll(Bdd::GetInstance());
 
         //Lancer la vue TWIG
-        return $twig->render(
+        return $this->twig->render(
             'Article/list.html.twig',[
                 'articleList' => $listArticle
             ]
